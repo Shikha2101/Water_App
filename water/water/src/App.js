@@ -6,6 +6,8 @@ import {  BrowserRouter as Router,
 import "./../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import Book  from "./components/Book";
 import Login from "./components/Login";
+import Home from './components/Home';
+import About from "./components/About";
 
 class App extends React.Component {
   render(){
@@ -19,7 +21,7 @@ class App extends React.Component {
               Water App
             </div>
             <div className="col-md-1" style={{right:'-105px'}}>
-              <NavLink to="/" exact activeStyle={{color:'green'}}>Home</NavLink>
+              <NavLink to="/home" exact activeStyle={{color:'green'}}>Home</NavLink>
             </div>
             <div className="col-md-1" style={{right:'-115px'}}>
               <NavLink to="/about" exact activeStyle={{color:'green'}}>About</NavLink>
@@ -33,6 +35,8 @@ class App extends React.Component {
           </div>
         </div>
         <Switch>
+          <Route path="/home" component={Home}></Route>
+          <Route path="/about" component={About}></Route>
           <Route path="/login" component={Login}></Route>
           <Route path="/book" component={Book}></Route>
         </Switch>
