@@ -2,7 +2,7 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import {  BrowserRouter as Router,
-  Route, Switch, NavLink } from 'react-router-dom';
+  Route, Switch, NavLink, Redirect } from 'react-router-dom';
 import "./../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import Book  from "./components/Book";
 import Login from "./components/Login";
@@ -35,6 +35,7 @@ class App extends React.Component {
           </div>
         </div>
         <Switch>
+          <Redirect from='/' to='/home' exact/>
           <Route path="/home" component={Home}></Route>
           <Route path="/about" component={About}></Route>
           <Route path="/login" component={Login}></Route>

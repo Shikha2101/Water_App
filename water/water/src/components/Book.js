@@ -3,6 +3,8 @@ import ProductCard from "react-ui-cards";
 import { Link } from 'react-router-dom';
 import { Card, Button, CardHeader, CardFooter, CardBody,
     CardTitle, CardText } from 'reactstrap';
+
+import WaterCanDetailsRow from './cans/WaterCanDetailsRow';
 import {Table} from "reactstrap";
 
 
@@ -35,11 +37,11 @@ class Book extends React.Component{
             ],
             columns: [
                 {
-                    datafield:'shopname',
+                    datafield:'ShopName',
                     text:'Shop Name'
                 },
                 {
-                    datafield:'WaterCan',
+                    datafield:'Can',
                     text:'Water Can'
                 },
                 {
@@ -47,8 +49,8 @@ class Book extends React.Component{
                     text:'Area'
                 }
             ],
-            quantity:0,
-            price:0
+            quantity: {},
+            price:40
                     }
     }
    
@@ -66,85 +68,62 @@ class Book extends React.Component{
         });
     }
     render(){
+      const {
+        columns,
+        items
+      } = this.state;
         return(
             <div>
-                       <Table striped bordered hover>
-  <thead>
-    <tr>
-      <th>#</th>
-      <th>Shop Name</th>
-      <th>Water Can</th>
-      <th>Area</th>
-      <th>Quantity</th>
-      <th>Price</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>1</td>
-      <td>Shop 1</td>
-      <td>Water Can 1</td>
-      <td>HSR</td>
-      <td>
-      <button onClick={this.decrease}>-</button>
-     {this.state.quantity}
-      <button onClick={this.increase}>+</button>
-      </td>
-      <td>
-      ₹{this.state.price}
-      </td>
-    </tr>
-    <tr>
-      <td>2</td>
-      <td>Shop 2</td>
-      <td>Water Can 2</td>
-      <td>Kormangala</td>
-      <td>
-      <button onClick={this.decrease}>-</button>
-      {this.state.quantity}
-      {
-          console.log("cdcdc",this.state.quantity)
-      }
-      <button onClick={this.increase}>+</button>
-      </td>
-      <td>
-      ₹{this.state.price}
-      </td>
-    </tr>
-    <tr>
-      <td>3</td>
-      <td>Shop 3</td>
-      <td>Water Can 3</td>
-      <td>BTM</td>
-      <td>
-      <button onClick={this.decrease}>-</button>
-      {this.state.quantity}
-      <button onClick={this.increase}>+</button>
-      </td>
-      <td>
-      ₹{this.state.price}
-      </td>
-    </tr>
-    <tr>
-      <td>4</td>
-      <td>Shop 4</td>
-      <td>Water Can 4</td>
-      <td>Bellandur</td>
-      <td>
-      <button onClick={this.decrease}>-</button>
-      {this.state.quantity}
-      <button onClick={this.increase}>+</button>
-      </td>
-      <td>
-      ₹{this.state.price}
-      </td>
-    </tr>
-    
-  </tbody>
-</Table>
+              <table>
+                <thead>
+                  <tr>
+                    {columns.map((column, i) => {
+                      return (
+                        <th key={i}>
+                          {column.text}
+                        </th>
+                      );
+                    })}
+                    <th>
+                      Quantity
+                    </th>
+                    <th>
+                      Total
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {items.map((item, i) => {
+                    return this.getItemAsRow(columns, item);
+                  })}
+                </tbody>
+              </table>
             </div>
         )
     }
+
+  /**
+   * Return an item as a table row
+   * @param {Array} columns Array of column definitions
+   * @param {Object} item The item
+   * @returns {String} Item details wrapped in <tr></tr> 
+   */
+  getItemAsRow(columns, item) {
+    return (
+      <WaterCanDetailsRow
+        columns={columns}
+        item={item}
+        price={this.state.price}
+        quantity={item.quantity}
+        setQuantity={this.setQuantity.bind(this, item)}
+      />
+    );
+  }
+
+  setQuantity(item, quantity) {
+    item.quantity = quantity;
+    this.forceUpdate();
+  }
 }
 
 export default Book;
