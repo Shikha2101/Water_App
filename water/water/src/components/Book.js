@@ -33,7 +33,12 @@ class Book extends React.Component{
                        "ShopName":"Shop 4",
                        "Can": "Water Can 4",
                        "Area":"Bellandur"
-               }
+                     },
+                     {
+                      "ShopName":"Shop 5",
+                      "Can": "Water Can 5",
+                      "Area":"Sarjapur"
+                    }
             ],
             columns: [
                 {
