@@ -3,7 +3,13 @@ const router = express.Router();
 const Shop = require('../models/shop');
 
 router.get('/shops', function(req, res){
-    res.send({type:'GET'});
+    Shop.aggregate([{ $geoNear: 
+        { near: 
+            {
+                type: 'Point', 
+                coordinates: [parseFloat(req.query.lng), parseFloat(req.query.lat)]}, 
+                spherical: true, maxDistance: 100000, distanceField: "dist.calculated" } }]).then(function(results){ res.send(results); 
+                });
 });
 
 router.post('/shops', function(req, res, next){
