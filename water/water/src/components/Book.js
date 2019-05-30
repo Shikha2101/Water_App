@@ -7,7 +7,13 @@ import { Card, Button, CardHeader, CardFooter, CardBody,
 import WaterCanDetailsRow from './cans/WaterCanDetailsRow';
 import {Table} from "reactstrap";
 import axios from "axios";
+import {Map, GoogleApiWrapper, InfoWindow, Marker } from 'google-maps-react';
+import CurrentLocation from "./CurrentLocation/Map";
 
+const mapStyles = {
+  width: '50%',
+  height: '60%'
+};
 
 class Book extends React.Component{
   //   constructor(){
@@ -131,22 +137,92 @@ class Book extends React.Component{
   // }
 
   state={
-    shops:[]
+    shops:[],
+    showingInfoWindow: false,  //Hides or the shows the infoWindow
+    activeMarker: {},          //Shows the active marker upon click
+    selectedPlace: {},          //Shows the infoWindow to the selected place upon a marker
+    latitude: '',
+    longitude:''
   }
 
   componentDidMount(){
-    axios.get(`http://localhost:5000/api/shops?lng=-82&lat=23`)
+    axios.get(`http://localhost:5000/api/shops?lng=-91&lat=23`)
          .then(res => {
            const shops = res.data;
            this.setState({shops});
+           console.log("map position", shops)
+
          })
   }
 
+  onMarkerClick = (props, marker, e) =>
+  this.setState({
+    selectedPlace: props,
+    activeMarker: marker,
+    showingInfoWindow: true,
+  });
+
+  onClose = props => {
+    if (this.state.showingInfoWindow) {
+      this.setState({
+        showingInfoWindow: false,
+        activeMarker: null
+      });
+    }
+  };
+  
+
   render(){
     return(
+      <div>
+      <div>
+      <CurrentLocation
+        centerAroundCurrentLocation
+        google={this.props.google}
+      >
+        <Marker onClick={this.onMarkerClick} name={'current location'} />
+        <InfoWindow
+          marker={this.state.activeMarker}
+          visible={this.state.showingInfoWindow}
+          onClose={this.onClose}
+        >
+          <div>
+            <h4>{this.state.selectedPlace.name}</h4>
+          </div>
+        </InfoWindow>
+      </CurrentLocation>
+      {/* <Map 
+        google={this.props.google}
+        zoom={18}
+        style={mapStyles}
+        initialCenter={{
+         lat: 12.930835,
+         lng: 77.632753
+        }}
+      >
+       <Marker
+          onClick={this.onMarkerClick}
+          name={'SVC Bank, Kormangala'}
+        />
+        <InfoWindow
+          marker={this.state.activeMarker}
+          visible={this.state.showingInfoWindow}
+          onClose={this.onClose}
+        >
+          <div>
+            <h4>{this.state.selectedPlace.name}</h4>
+          </div>
+        </InfoWindow>
+        </Map> */}
+      </div>
       <ul>{this.state.shops.map(shop => <li>{shop.shopname}<span />{shop.Area}</li>)} </ul>
+      {console.log("position", this.state.selectedPlace.mapCenter)}
+      </div>
     )
   }
 }
 
-export default Book;
+export default GoogleApiWrapper({
+  apiKey: ("AIzaSyB6ms1UnuXH8fGDFci2PvQY2tR2fBSiU7c")
+})(Book)
+
