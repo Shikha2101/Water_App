@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from 'react-dom';
+import axios from 'axios';
 
 const mapStyles = {
     map:{
@@ -56,9 +57,19 @@ class CurrentLocation extends React.Component{
                             lng: coords.longitude
                         }
                     });
+                    console.log("posi", this.state.currentLocation.lat);
+                    console.log("posi1", this.state.currentLocation.lng);
                 });
             }
         }
+            axios.get(`http://localhost:5000/api/shops?lng=`+this.state.currentLocation.lng+`&lat=`+this.state.currentLocation.lat)
+                 .then(res => {
+                   const shops = res.data;
+                   this.setState({shops});
+                   console.log("map position", shops)
+        
+                 })
+          
         this.loadMap();
     }
 
@@ -81,7 +92,7 @@ class CurrentLocation extends React.Component{
                     zoom: zoom
                 }
             );
-
+            
             this.map = new maps.Map(node, mapConfig);
         }
     }
@@ -106,6 +117,9 @@ render() {
          Loading map...
        </div>
        {this.renderChildren()}
+       <div style={{float:'right'}}>
+       {this.shops}
+       </div>
      </div>
    );
  }
@@ -115,8 +129,8 @@ export default CurrentLocation;
 CurrentLocation.defaultProps = {
     zoom:18,
     initialCenter : {
-        lat: 12.930835,
-        lng: 77.632753
+        lat: 12.930830,
+        lng: 77.632750
     },
     centerAroundCurrentLocation: false,
     visible: true
