@@ -5,7 +5,7 @@
   "main": "index.js",
   "devDependencies": {
     "babel-cli": "6.4.0",
-    "babel-core": "6.4.0",
+    "babel-core": "6.26.3",
     "babel-eslint": "6.0.0-beta.6",
     "babel-plugin-module-alias": "1.1.1",
     "babel-polyfill": "6.3.14",
@@ -17,12 +17,12 @@
     "eslint": "2.4.0",
     "eslint-plugin-babel": "3.1.0",
     "eslint-watch": "2.1.10",
-    "mocha": "2.4.5",
+    "mocha": "10.1.0",
     "nock": "^9.0.9",
     "nodemon": "^1.19.0",
     "sinon": "1.17.3",
     "super-request": "1.1.0",
-    "watch-run": "1.2.4"
+    "watch-run": "1.2.5"
   },
   "scripts": {
     "test": "npm run lint && npm run testonly",
