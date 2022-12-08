@@ -21,7 +21,7 @@
     "nock": "^9.0.9",
     "nodemon": "^1.19.0",
     "sinon": "1.17.3",
-    "super-request": "1.1.0",
+    "super-request": "2.0.0",
     "watch-run": "1.2.4"
   },
   "scripts": {
